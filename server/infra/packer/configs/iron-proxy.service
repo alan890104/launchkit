@@ -1,0 +1,21 @@
+[Unit]
+Description=iron-proxy egress firewall for build containers
+After=network-online.target
+Before=buildkitd.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Pre-create buildkit0 bridge so iron-proxy can bind to 10.222.0.1.
+# CNI bridge plugin is idempotent — it reuses an existing bridge with the
+# same name and subnet, so creating it early does not conflict with BuildKit.
+ExecStartPre=/bin/sh -c 'ip link show buildkit0 2>/dev/null || ip link add buildkit0 type bridge'
+ExecStartPre=/bin/sh -c 'ip addr show buildkit0 | grep -q 10.222.0.1 || ip addr add 10.222.0.1/16 dev buildkit0'
+ExecStartPre=/bin/sh -c 'ip link set buildkit0 up'
+ExecStart=/usr/local/bin/iron-proxy --config /etc/iron-proxy/iron-proxy.yaml
+Restart=always
+RestartSec=3
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

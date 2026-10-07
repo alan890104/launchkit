@@ -1,0 +1,16 @@
+[Unit]
+Description=BuildKit daemon (gVisor-isolated, CNI-networked)
+After=containerd.service
+Requires=containerd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/buildkitd \
+  --addr tcp://0.0.0.0:1234 \
+  --config /etc/buildkit/buildkitd.toml
+Restart=always
+RestartSec=5
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target

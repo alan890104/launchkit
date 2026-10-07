@@ -1,0 +1,45 @@
+# iron-proxy egress firewall configuration for LaunchKit BuildKit VM
+#
+# Phase 1: DNS audit mode — all domains passthrough, log every query.
+# Phase 2: restrict passthrough to allowlisted domains only.
+# Phase 3: remove warn mode → enforce default-deny.
+#
+# Architecture:
+#   Build container DNS → iron-proxy (10.222.0.1:53) → upstream 8.8.8.8
+#   Passthrough domains: iron-proxy returns real IP → direct connection
+#   Non-passthrough:     iron-proxy returns proxy_ip → MITM → TLS error = block
+
+dns:
+  listen: "10.222.0.1:53"
+  proxy_ip: "10.222.0.1"
+  upstream_resolver: "8.8.8.8:53"
+  # Phase 1: passthrough everything (audit only — log DNS queries, never block)
+  # Phase 2: replace with explicit allowlist of package registries
+  passthrough:
+    - "*"
+
+proxy:
+  http_listen: "10.222.0.1:80"
+  https_listen: "10.222.0.1:443"
+
+tls:
+  ca_cert: "/etc/iron-proxy/ca.crt"
+  ca_key: "/etc/iron-proxy/ca.key"
+  cert_cache_size: 500
+  leaf_cert_expiry_hours: 72
+
+transforms:
+  - name: allowlist
+    config:
+      # Phase 1-2: warn mode (log violations, don't block)
+      # Phase 3: remove warn to enforce default-deny
+      warn: true
+      domains:
+        - "*"
+      cidrs:
+        - "0.0.0.0/0"
+
+log:
+  # Phase 1: debug level to capture all DNS queries for allowlist baseline.
+  # Phase 2+: switch to info once allowlist is finalized.
+  level: "debug"

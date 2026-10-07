@@ -1,0 +1,20 @@
+# Google Cloud Ops Agent configuration for BuildKit VM.
+# Ships systemd journal (including iron-proxy audit logs) to Cloud Logging.
+#
+# Default Ops Agent config only tails flat files (/var/log/syslog).
+# We override with systemd_journald receiver so iron-proxy structured JSON
+# logs are ingested into Cloud Logging with jsonPayload intact.
+#
+# Query example:
+#   gcloud logging read \
+#     'resource.type="gce_instance" AND jsonPayload.msg="dns passthrough"' \
+#     --limit=20 --format=json
+
+logging:
+  receivers:
+    journald:
+      type: systemd_journald
+  service:
+    pipelines:
+      default_pipeline:
+        receivers: [journald]

@@ -1,0 +1,22 @@
+# gVisor (runsc) configuration for LaunchKit BuildKit VM
+# GCE e2-standard-4: no nested virtualization → systrap platform (not kvm)
+# https://gvisor.dev/docs/user_guide/containerd/configuration/
+
+[runsc_config]
+  # systrap: uses SECCOMP_RET_TRAP to intercept syscalls.
+  # Works on GCE e2 (no /dev/kvm). Default since mid-2023, explicit here for clarity.
+  platform = "systrap"
+
+  # network=host: use the host kernel's TCP/IP stack instead of gVisor's netstack.
+  # Required because gVisor's sandbox network has an ARP resolution bug with
+  # CNI bridge plugins (gVisor #3301). network=host does NOT disable syscall
+  # sandboxing — only the Sentry's own socket syscalls use the host stack.
+  network = "host"
+
+  # overlay2=none: disable gVisor's internal rootfs overlay.
+  # BuildKit's containerd worker uses overlayfs snapshotter to layer build
+  # step outputs. gVisor's default (overlay2=root:self) adds a second overlay
+  # with a filestore inside the rootfs, which conflicts with BuildKit's overlay —
+  # files created in one build step become invisible in the next.
+  # Setting overlay2=none lets gVisor use the host-managed overlay directly.
+  overlay2 = "none"

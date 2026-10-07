@@ -1,0 +1,50 @@
+# LaunchKit BuildKit configuration
+# Multi-tenant isolation: gVisor (runsc) sandbox per build step.
+#
+# Runtime: io.containerd.runsc.v1 (gVisor)
+#   - systrap platform (GCE e2 compatible, no /dev/kvm)
+#   - network=host in runsc.toml → gVisor uses host kernel TCP/IP (not netstack)
+#   - Host kernel handles ARP → avoids gVisor netstack ARP bug (#3301)
+#   - Flags loaded from /etc/containerd/runsc.toml via ConfigPath
+#
+# Network: CNI bridge mode (each build step gets its own network namespace)
+#   - veth pair + bridge (buildkit0) + NAT masquerade
+#   - gVisor network=host uses the host kernel stack INSIDE the CNI netns
+#   - iptables FORWARD rules block metadata server, VPC, link-local
+#   - DNS routed through iron-proxy (10.222.0.1) for egress audit/control
+
+[worker.oci]
+  enabled = false
+
+[worker.containerd]
+  enabled       = true
+  namespace     = "buildkit"
+  networkMode   = "bridge"
+  cniBinaryPath = "/opt/cni/bin"
+  bridgeName    = "buildkit0"
+  bridgeSubnet  = "10.222.0.0/16"
+
+  # gVisor runtime with ConfigPath so the shim reads runsc.toml.
+  # Without ConfigPath, the shim ignores runsc.toml and uses defaults.
+  [worker.containerd.runtime]
+    name = "io.containerd.runsc.v1"
+    [worker.containerd.runtime.options]
+      TypeUrl = "io.containerd.runsc.v1.options"
+      ConfigPath = "/etc/containerd/runsc.toml"
+
+  # Cache GC policy: keep 80GB, 30 days max
+  [[worker.containerd.gcpolicy]]
+    keepBytes    = 85899345920
+    keepDuration = 2592000
+
+# DNS: routed through iron-proxy on the bridge gateway (10.222.0.1).
+# iron-proxy forwards to upstream 8.8.8.8 (Google Public DNS) and logs all
+# queries for egress audit. In Phase 2+, non-allowlisted domains resolve to
+# the proxy IP, effectively blocking outbound connections.
+[dns]
+  nameservers = ["10.222.0.1"]
+
+# Security hardening: never allow privileged builds or host networking.
+[entitlements]
+  # security.insecure = false  (default)
+  # network.host = false       (default)

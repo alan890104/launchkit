@@ -1,0 +1,19 @@
+[
+  {
+    "name": "delete-untagged-layers",
+    "action": { "type": "Delete" },
+    "condition": {
+      "tagState": "untagged",
+      "olderThan": "604800s"
+    }
+  },
+  {
+    "name": "delete-stale-buildcache",
+    "action": { "type": "Delete" },
+    "condition": {
+      "tagState": "tagged",
+      "tagPrefixes": ["buildcache"],
+      "olderThan": "2592000s"
+    }
+  }
+]

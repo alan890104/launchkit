@@ -1,0 +1,277 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-space-grotesk);
+  --font-heading: var(--font-ibm-plex-serif);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  /* Railway-inspired dark — Amber/Gold accent, no blue/green/purple */
+  --background: oklch(0.09 0.008 285);       /* #13111C dark purple-gray black */
+  --foreground: oklch(0.97 0.003 106);       /* warm white with a slight warm tone */
+  --card: oklch(0.13 0.010 285);             /* cards slightly lighter */
+  --card-foreground: oklch(0.97 0.003 106);
+  --popover: oklch(0.13 0.010 285);
+  --popover-foreground: oklch(0.97 0.003 106);
+  --primary: oklch(0.79 0.15 75);            /* Amber #F59E0B — golden accent */
+  --primary-foreground: oklch(0.09 0.008 285);
+  --secondary: oklch(0.18 0.010 285);
+  --secondary-foreground: oklch(0.97 0.003 106);
+  --muted: oklch(0.15 0.008 285);
+  --muted-foreground: oklch(0.58 0.015 285);
+  --accent: oklch(0.18 0.010 285);
+  --accent-foreground: oklch(0.97 0.003 106);
+  --destructive: oklch(0.60 0.22 25);        /* red destructive */
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.22 0.010 285);           /* rgba(255,255,255,0.12) equivalent */
+  --input: oklch(0.22 0.010 285);
+  --ring: oklch(0.79 0.15 75);
+  --chart-1: oklch(0.79 0.15 75);
+  --chart-2: oklch(0.70 0.18 40);
+  --chart-3: oklch(0.65 0.15 25);
+  --chart-4: oklch(0.55 0.10 60);
+  --chart-5: oklch(0.45 0.06 80);
+  --sidebar: oklch(0.11 0.009 285);
+  --sidebar-foreground: oklch(0.97 0.003 106);
+  --sidebar-primary: oklch(0.79 0.15 75);
+  --sidebar-primary-foreground: oklch(0.09 0.008 285);
+  --sidebar-accent: oklch(0.16 0.009 285);
+  --sidebar-accent-foreground: oklch(0.97 0.003 106);
+  --sidebar-border: oklch(0.22 0.010 285);
+  --sidebar-ring: oklch(0.79 0.15 75);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-ibm-plex-serif), Georgia, serif;
+  }
+}
+
+/* ── Grid background ── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(255 255 255 / 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255 255 255 / 0.15) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Fade the grid out toward the bottom */
+.grid-bg-fade {
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+}
+
+/* ── Terminal log line animation ── */
+@keyframes log-appear {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.log-line {
+  animation: log-appear 0.25s ease forwards;
+  opacity: 0;
+}
+
+/* Staggered delays for log lines */
+.log-line:nth-child(1)  { animation-delay: 0.3s; }
+.log-line:nth-child(2)  { animation-delay: 0.7s; }
+.log-line:nth-child(3)  { animation-delay: 1.0s; }
+.log-line:nth-child(4)  { animation-delay: 1.3s; }
+.log-line:nth-child(5)  { animation-delay: 1.6s; }
+.log-line:nth-child(6)  { animation-delay: 1.9s; }
+.log-line:nth-child(7)  { animation-delay: 2.2s; }
+.log-line:nth-child(8)  { animation-delay: 2.5s; }
+.log-line:nth-child(9)  { animation-delay: 3.0s; }
+.log-line:nth-child(10) { animation-delay: 3.5s; }
+
+/* ── Server LED indicators ── */
+@keyframes led-power { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@keyframes led-disk  { 0%, 11%  { opacity: 1; } 12%, 24% { opacity: 0.04; } 25%, 100% { opacity: 1; } }
+@keyframes led-net   { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.1; } }
+
+/* ── Blinking cursor ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ── Pulse dot for live status ── */
+@keyframes pulse-ring {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  70%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.live-dot::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+/* ── Fade-up entrance for sections ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fade-up 0.6s ease forwards;
+}
+.fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.fade-up-delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+/* ── Progress bar fill ── */
+@keyframes progress-fill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+.progress-fill {
+  animation: progress-fill 2s ease 2.5s forwards;
+  width: 0%;
+}
+
+/* ── Marquee: endless horizontal scroll (for the logo strip)── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 8px)); }
+}
+.animate-marquee { animation: marquee 40s linear infinite; }
+.animate-marquee-reverse { animation: marquee 40s linear infinite reverse; }
+
+/* ── Shimmer (loading skeleton and background glow)── */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(245,158,11,0.06) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Slow rotating ambient blob(background decoration)── */
+@keyframes rotate-blob {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+.animate-blob { animation: rotate-blob 30s linear infinite; }
+
+/* ── Pulse station(status indicator dot)── */
+@keyframes pulse-station {
+  0% { opacity: 1; transform: scale(0); }
+  45% { opacity: 1; }
+  100% { opacity: 0; transform: scale(2.5); }
+}
+.pulse-station::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-station 2.5s cubic-bezier(0.25, 0.1, 0.25, 0.8) infinite;
+}
+
+/* ── Cursor blink(IDE + terminal cursor)── */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Flash highlight(feedback for code/deploy actions)── */
+@keyframes flash-amber {
+  0% { background-color: oklch(0.79 0.15 75 / 0.20); }
+  100% { background-color: transparent; }
+}
+.animate-flash { animation: flash-amber 1s ease-out forwards; }

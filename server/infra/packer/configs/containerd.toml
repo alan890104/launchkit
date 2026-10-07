@@ -1,0 +1,17 @@
+version = 2
+
+[plugins."io.containerd.grpc.v1.cri".containerd]
+  default_runtime_name = "runc"
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+  runtime_type = "io.containerd.runc.v2"
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc]
+  runtime_type = "io.containerd.runsc.v1"
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runsc.options]
+  TypeUrl    = "io.containerd.runsc.v1.options"
+  # ConfigPath tells the shim where to find runsc flags (platform, network, reproduce-nftables).
+  # Without this, runsc runs with defaults: systrap + sandbox network but no reproduce-nftables,
+  # which breaks internet access in build containers on GCE.
+  ConfigPath = "/etc/containerd/runsc.toml"
